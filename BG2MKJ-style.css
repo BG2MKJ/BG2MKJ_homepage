@@ -88,3 +88,52 @@ button{
     font-size:medium;
     font-weight: bold;
 }
+
+#custom_link
+{
+    height: 40px;
+    width: 40%;
+}
+#count_down_back{
+    background-color:#ccc;
+    position: relative;
+    overflow: hidden;
+    height: 5%;
+}
+#count_down_front{
+    background-color: antiquewhite;
+    width: 99%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: 100%;
+}
+#count_down_text {
+    position: absolute; /* 关键：文字绝对定位 */
+    left: 50%; /* 水平居中 */
+    top: 50%; /* 垂直居中 */
+    transform: translate(-50%, -50%); /* 精确居中 */
+    color: black; /* 文字颜色 */
+    font-weight: bold;
+    white-space: nowrap; /* 防止换行 */
+    z-index: 1; /* 确保文字在进度条上方 */
+}
+#modify_count_down {
+    
+    align-items: center;     /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    height: 30px;           /* 必须指定高度 */
+    padding: 0 10px;        /* 可选：调整内边距 */
+}
+#date_selector{
+    align-items: center;     /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    height: 30px;           /* 必须指定高度 */
+    padding: 0 10px;        /* 可选：调整内边距 */
+}
+#count_modi {
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center;    /* 垂直居中 */
+  gap: 10px;             /* 可选：设置按钮和输入框之间的间距 */
+}

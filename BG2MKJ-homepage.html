@@ -87,12 +87,32 @@
                 <button class="quick_link">SoftWear</button>
             </a>
         </span>
+        <br><br>
+        <span>
+            <a href="" id="custom_link_to" target="_blank">
+                <button class="quick_link">Custom</button>
+            </a>
+            <input type="text" id="custom_link" placeholder="custom link" >
+            <button class="quick_link" id="custom_link_confirm">Confirm</button>
+        </span>
     </div>
     <hr>
 
-    <!-- 时间 -->
-    <div id="realtime">
-    </div>
+
+    <!-- 时间 and 倒计时-->
+     <div>
+        <div id="realtime"></div>
+        <div id="count_down_back" >
+            <div id="count_down_front"> </div>
+            <div id="count_down_text"></div>
+        </div>
+        <br>
+        <div id="count_modi">
+            <button id="modify_count_down">更改倒计时</button>
+            <input id="date_selector" type="date" >
+        </div>
+     </div>
+    
     <hr>
 
     <!-- 在线检测 -->
