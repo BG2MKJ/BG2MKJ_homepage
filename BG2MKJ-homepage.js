@@ -1,4 +1,5 @@
-
+const VERSION = "1.3.0";
+const MODIFY = 20250513;
 
 
 function updateNetworkStatus() {
@@ -13,6 +14,11 @@ function updateNetworkStatus() {
         statusText.textContent = '网络已断开';
         networkStatus.querySelector('.status-icon').textContent = '✗';
     }
+}
+
+function showversion(){
+    const version_text = document.getElementById("v");
+    version_text.innerHTML = `Version: ${VERSION} <br> Last modified: ${MODIFY}`;
 }
 
 function updatetime(){
@@ -139,6 +145,9 @@ document.addEventListener("DOMContentLoaded",function(){
     const cancelbutton = document.getElementById("cancelbutton");
     const passwordtext = document.getElementById("passwordtext");
     const storagedata = localStorage.getItem("coursetable");
+
+
+    showversion();
 
     init_custom_link();
 
