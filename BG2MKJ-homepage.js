@@ -211,12 +211,12 @@ document.addEventListener("DOMContentLoaded",function(){
             {
                 return;
             }
-        if(passwordtext.value != password)
-        {
-            console.log("password wrong!");
-            alert("password wrong!");
-            return ;
-        }
+        // if(passwordtext.value != password)
+        // {
+        //     console.log("password wrong!");
+        //     alert("password wrong!");
+        //     return ;
+        // }
         
         const cells = table.querySelectorAll(".editable-cell");
         cells.forEach(cell => {
@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded",function(){
             rows.push(row);
         });
         localStorage.setItem("coursetable",JSON.stringify(rows));
-        alert("save!");
+        //alert("save!");
         isinediting=0;
     });
 

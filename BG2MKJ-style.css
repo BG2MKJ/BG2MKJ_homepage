@@ -1,13 +1,26 @@
+
+
+/* 然后替换所有#4a90e2为var(--primary-color) */
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: 
+        linear-gradient(to bottom, #ababab, #ffffff 10%) /* 顶部 10% 渐变 */
+        no-repeat,
+        #ffffff; /* 剩余 90% 纯白色背景 */
+}
 table{
     width: 100%;
     border: 1px solid #ddd;
     border-collapse: collapse;
     margin-top: 10px;
     margin-bottom: 20px;
-    
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
 }
 h1,h2{
     text-align: center;
+    
 }
 th{
     border: 1px solid #ddd;
@@ -15,10 +28,10 @@ th{
     text-align: center;
 
 }
+
 .searchtext{
     text-align: center;
-    margin: 10px 0;
-    padding: 10px;
+    width: 100%;
 }
 #realtime{
     text-align: center;
@@ -32,21 +45,36 @@ th{
     /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); */
 }
 .searchtext input[type="text"] {
-    width: 250px;
-    height: 35px;
+    width: 50%;
+    height: 46px;
     padding: 0 10px;
-    font-size: 16px;
+    font-size: 18px;
+    font-family: "FangSong","仿宋",sans-serif;
+    border: 2px solid #a4abb3;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   }
+  .searchtext input[type="text"]:focus {
+    border-color: #1b1f23; /* 深蓝色聚焦效果 */
+    box-shadow: 0 0 8px rgba(33, 45, 58, 0.6); /* 聚焦时阴影增强 */
+}
   .searchbut input[type="submit"] {
     width: 100px;
     height: 35px;
     font-size: 16px;
+    font-family: "FangSong","仿宋",sans-serif;
+    background-color: #c4c4c4;
+    border-radius: 2px;
+    border-color: #a3a3a9;
   }
 .searchbut{
     text-align: center;
+    font-family: "FangSong","仿宋",sans-serif;
 }
 div{
     text-align: center;
+    width: 100%;
 }
 .data{
     text-align: center;
@@ -54,6 +82,7 @@ div{
     position: relative;
     height: 40px;
     height: 80px;
+    font-family: "FangSong","仿宋",sans-serif;
 }
 
 .time{
@@ -79,20 +108,61 @@ div{
     height: 40px;
 }
 
-button{
-    width: 15%;
-    height: 40px;
-    padding: 5px;
+button {
+    width: 15%;          /* 保持 15% 宽度 */
+    height: 40px;        /* 固定高度 */
+    padding: 5px;        /* 内边距 */
+    box-sizing: border-box;  /* 防止 padding 影响宽度计算 */
+    white-space: nowrap; /* 防止文字换行 */
+    overflow: hidden;    /* 隐藏溢出内容 */
+    text-overflow: ellipsis; /* 超出部分显示省略号 */
+    font-size: clamp(12px, 2vw, 16px); /* 字体大小自适应 */
+    font-family: "FangSong","仿宋",sans-serif;
+   background-color: #c4c4c4;
+    border-radius: 8px;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    button {
+        width: 15%;      /* 在小屏幕上适当增加宽度 */
+        font-size: 14px; /* 调整字体大小 */
+        font-family: "FangSong","仿宋",sans-serif;
+    }
+}
+
+@media (max-width: 480px) {
+    button {
+        width: 15%;      /* 在超小屏幕上进一步调整 */
+        font-size: 10px; /* 更小的字体 */
+        font-family: "FangSong","仿宋",sans-serif;
+    }
 }
 .quick_link{
     font-size:medium;
     font-weight: bold;
+    background-color: #c4c4c4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3 ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    
 }
-
+.quick_link:hover {
+    background-color: #8c8c8c; /* 悬停时深蓝色 */
+    transform: translateY(-2px); /* 轻微上浮效果 */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
 #custom_link
 {
     height: 40px;
     width: 40%;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    border-radius: 8px;
+    border: 2px solid #444450;
 }
 #count_down_back{
     background-color:#ccc;
@@ -101,12 +171,13 @@ button{
     height: 5%;
 }
 #count_down_front{
-    background-color: antiquewhite;
-    width: 99%;
+    
+    width: 50%;
     align-items: center;
     justify-content: center;
     display: flex;
     height: 100%;
+    background: linear-gradient(to right, #b9c5c5, #0c1e2e);
 }
 #count_down_text {
     position: absolute; /* 关键：文字绝对定位 */
@@ -130,10 +201,21 @@ button{
     justify-content: center; /* 水平居中 */
     height: 30px;           /* 必须指定高度 */
     padding: 0 10px;        /* 可选：调整内边距 */
+    font-family: "FangSong","仿宋",sans-serif;
 }
 #count_modi {
   display: flex;
   justify-content: center; /* 水平居中 */
   align-items: center;    /* 垂直居中 */
   gap: 10px;             /* 可选：设置按钮和输入框之间的间距 */
+}
+
+.status-icon {
+    font-size: 20px;
+    color: #4a90e2;
+    animation: spin 2s linear infinite; /* 旋转动画 */
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
