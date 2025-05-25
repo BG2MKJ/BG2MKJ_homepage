@@ -109,12 +109,12 @@ div{
 }
 
 button {
-    width: 15%;          /* 保持 15% 宽度 */
+    width: 17%;          /* 保持 15% 宽度 */
     height: 40px;        /* 固定高度 */
-    padding: 5px;        /* 内边距 */
+    padding: 2px;        /* 内边距 */
     box-sizing: border-box;  /* 防止 padding 影响宽度计算 */
     white-space: nowrap; /* 防止文字换行 */
-    overflow: hidden;    /* 隐藏溢出内容 */
+    overflow: visible;    /* 隐藏溢出内容 */
     text-overflow: ellipsis; /* 超出部分显示省略号 */
     font-size: clamp(12px, 2vw, 16px); /* 字体大小自适应 */
     font-family: "FangSong","仿宋",sans-serif;
@@ -145,7 +145,7 @@ button {
     color: white;
     border: none;
     border-radius: 8px;
-    padding: 10px 20px;
+    padding: 1px 2px;
     cursor: pointer;
     transition: all 0.3 ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);

@@ -1,5 +1,5 @@
-const VERSION = "1.3.0";
-const MODIFY = 20250513;
+const VERSION = "1.3.1";
+const MODIFY = 20250525;
 
 
 function updateNetworkStatus() {
