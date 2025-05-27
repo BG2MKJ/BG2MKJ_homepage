@@ -1,5 +1,5 @@
-const VERSION = "1.3.1";
-const MODIFY = 20250525;
+const VERSION = "1.4.0";
+const MODIFY = 20250527;
 
 
 function updateNetworkStatus() {
@@ -34,13 +34,16 @@ function update_date_count(){
     const date_count_tar_day = localStorage.getItem("date_count_tar_day");
     const date_count_event = localStorage.getItem("date_count_event");
     const count_down_text = document.getElementById("count_down_text");
-    const today = new Date();
-    let date_count_today = today.toISOString().split('T')[0];
-
-    function getDayDiff(dateStr1, dateStr2) {
-        // 将日期字符串转换为 Date 对象
-        const date1 = new Date(dateStr1);
-        const date2 = new Date(dateStr2);
+    const now_day = new Date();
+    const set_day = new Date(date_count_set_day+ "T00:00:00");
+    const tar_day = new Date(date_count_tar_day+ "T00:00:00");
+    let date_count_today = now_day.toISOString().split('T')[0];
+    const today_day = new Date(date_count_today+ "T00:00:00");
+    // console.log("setday",set_day);
+    // console.log("tarday",tar_day);
+    // console.log("now",now_day);
+    // console.log("nowday",today_day);
+    function getDayDiff(date1, date2) {
         
         // 计算时间差（毫秒）
         const timeDiff = (date2 - date1);
@@ -48,12 +51,24 @@ function update_date_count(){
         // 将毫秒转换为天数
         return Math.floor(timeDiff / (1000 * 60 * 60 * 24));
     }
-
+    function getDayDiff_ms(date1, date2) {
+        // 将日期字符串转换为 Date 对象
+        
+        // 计算时间差（毫秒）
+        return timeDiff = (date2 - date1);
+        
+        
+    }
     
-    const last_days = getDayDiff(date_count_today,date_count_tar_day);
-    const whole_days = getDayDiff(date_count_set_day,date_count_tar_day);
-    let count_percent = 100 - last_days *100 / whole_days;
-    let count_show = `距离  ${date_count_event}  ${date_count_tar_day}  还剩 ${last_days} 天   已完成${count_percent.toFixed(1)}%`;
+    const last_days = getDayDiff(today_day,tar_day);
+    
+    let last_ms = getDayDiff_ms(now_day,tar_day);
+    let whole_ms = getDayDiff_ms(set_day,tar_day);
+    let count_percent = 100 - last_ms *100 / whole_ms;
+    // console.log("last_ms",last_ms);
+    // console.log("whole_ms",whole_ms);
+    // console.log("count_per",count_percent);
+    let count_show = `距离  ${date_count_event}  ${date_count_tar_day}  还剩 ${last_days} 天   已完成${count_percent.toFixed(5)}%`;
     
     if(last_days<=0)
     {
@@ -64,8 +79,10 @@ function update_date_count(){
     
     count_down_text.textContent = count_show;
     count_down_front.style.width = `${count_percent}%`;
-    
-
+    delete now_day;
+    delete set_day;
+    delete tar_day;
+    delete today_day;
 }
 
 
@@ -102,6 +119,9 @@ function init_count_down(){
         this.style.display = "none";
         date_selector.style.display = "block";
     });
+
+
+    setInterval(update_date_count,1000);
 
 }
 
@@ -155,6 +175,7 @@ document.addEventListener("DOMContentLoaded",function(){
 
     updatetime();
     setInterval(updatetime,1000);
+
 
     updateNetworkStatus()
     setInterval(updateNetworkStatus, 5000);
