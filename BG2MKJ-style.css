@@ -39,7 +39,7 @@ th{
     font-size: 24px;
     /* color: #333; */
     /* background-color: #f0f0f0; */
-    padding: 15px 25px;
+    margin: 10px 0px;
     border-radius: 8px;
     /* display: inline-block; */
     /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); */
@@ -142,7 +142,7 @@ button {
     font-size:medium;
     font-weight: bold;
     background-color: #c4c4c4;
-    color: white;
+    color: rgb(17, 9, 9);
     border: none;
     border-radius: 8px;
     padding: 1px 2px;
@@ -177,7 +177,7 @@ button {
     justify-content: center;
     display: flex;
     height: 100%;
-    background: linear-gradient(to right, #b9c5c5, #9eaab4);
+    background: linear-gradient(to right, #7be4e4, #00ff99);
 }
 #count_down_text {
     position: absolute; /* 关键：文字绝对定位 */

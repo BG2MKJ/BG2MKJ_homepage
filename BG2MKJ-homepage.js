@@ -1,5 +1,5 @@
-const VERSION = "1.4.0";
-const MODIFY = 20250527;
+const VERSION = "1.4.1";
+const MODIFY = 20250609;
 
 
 function updateNetworkStatus() {
@@ -121,7 +121,7 @@ function init_count_down(){
     });
 
 
-    setInterval(update_date_count,1000);
+    setInterval(update_date_count,600);
 
 }
 
