@@ -1,196 +1,178 @@
-
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BG2MKJ-homepage</title>
+    <title>BG2MKJ - 个人起始页</title>
     <link rel="stylesheet" href="BG2MKJ-style.css">
 </head>
-
 <body>
-    <h1>BG2MKJ <br> HOMEPAGE <br></h1>
-
-
-    <!-- 搜索 -->
-    <div>
-        <form action="https://www.baidu.com/s" method="get">
-            <p class="searchtext">
-                <input  type="text" name="wd" placeholder="搜索一下" autofocus>
-
-            </p>
-            <p class="searchbut">
-                <input type="submit" value="搜索">
-            </p>
-        </form>
-    </div>
-    <hr>
-
-    <!-- 常用连接 -->
-    <div>
-
-        
-        <h2>
-            常用链接
-        </h2>
-        <span>
-            <a href="https://chat.deepseek.com/" target="_blank">
-                <button class="quick_link">DeepSeek</button>
-            </a>
-            <a href="https://kimi.moonshot.cn/" target="_blank">
-                <button class="quick_link">Kimi</button>
-            </a>
-            <a href="https://www.bilibili.com/" target="_blank">
-                <button class="quick_link">Bilibili</button>
-            </a>
-            <a href="https://mail.163.com/" target="_blank">
-                <button class="quick_link">163.com</button>
-            </a>
-            <a href="https://appmail.mail.10086.cn/" target="_blank">
-                <button class="quick_link">139.com</button>
-            </a>
-        </span>
-        <br><br>
-        <span>
-            <a href="https://leetcode.cn/" target="_blank">
-                <button class="quick_link">LeetCode</button>
-            </a>
-            <a href="https://www.luogu.com.cn/" target="_blank">
-                <button class="quick_link">LuoGu</button>
-            </a>
-            <a href="https://github.com/" target="_blank">
-                <button class="quick_link">GitHub</button>
-            </a>
-            <a href="https://passport2.chaoxing.com/" target="_blank">
-                <button class="quick_link">StudyPass</button>
-            </a>
-            <a href="https://weibo.com/" target="_blank">
-                <button class="quick_link">WeiBo</button>
-            </a>
-        </span>
-        <br><br>
-        <span>
-            <a href="https://www.jlu.edu.cn/" target="_blank">
-                <button class="quick_link">JLU</button>
-            </a>
-            <a href="https://oa.jlu.edu.cn/" target="_blank">
-                <button class="quick_link">OA</button>
-            </a>
-            <a href="https://jwc.jlu.edu.cn/" target="_blank">
-                <button class="quick_link">JWC</button>
-            </a>
-            <a href="https://iedu.jlu.edu.cn/" target="_blank">
-                <button class="quick_link">Iedu</button>
-            </a>
-            <a href="https://csw.jlu.edu.cn/" target="_blank">
-                <button class="quick_link">SoftWear</button>
-            </a>
-        </span>
-        <br><br>
-        <span>
-            <a href="" id="custom_link_to" target="_blank">
-                <button class="quick_link">Custom</button>
-            </a>
-            <input type="text" id="custom_link" placeholder="custom link" >
-            <button class="quick_link" id="custom_link_confirm">Confirm</button>
-        </span>
-    </div>
-    <hr>
-
-
-    <!-- 时间 and 倒计时-->
-     <div>
-        <div id="realtime"></div>
-        <div id="count_down_back" >
-            <div id="count_down_front"> </div>
-            <div id="count_down_text"></div>
+    <div class="container">
+        <!-- 登录/注册表单 -->
+        <div id="auth-container" class="auth-container">
+            <div class="auth-form">
+                <h2>BG2MKJ的起始页</h2>
+                <h2>登录/注册</h2>
+                <div id="auth-tabs">
+                    <button class="tab-btn active" data-tab="login">登录</button>
+                    <button class="tab-btn" data-tab="register">注册</button>
+                </div>
+                <form id="login-form" class="auth-form-content">
+                    <input type="text" id="login-username" placeholder="用户名" required>
+                    <input type="password" id="login-password" placeholder="密码" required>
+                    <button type="submit">登录</button>
+                </form>
+                <form id="register-form" class="auth-form-content hidden">
+                    <input type="text" id="register-username" placeholder="用户名" required>
+                    <input type="password" id="register-password" placeholder="密码" required>
+                    <input type="email" id="register-email" placeholder="邮箱(可选)">
+                    <button type="submit">注册</button>
+                </form>
+                <div id="auth-message" class="message"></div>
+            </div>
         </div>
-        <br>
-        <div id="count_modi">
-            <button id="modify_count_down">更改倒计时</button>
-            <input id="date_selector" type="date" >
-        </div>
-     </div>
-    
-    <hr>
 
-    <!-- 在线检测 -->
-    <div id="networkStatus">
-        <span class="status-icon">↻</span>
-        <span id="statusText">检测网络状态...</span>
-    </div>
-    <hr>
+        <!-- 主内容区域 (登录后显示) -->
+        <div id="main-content" class="hidden">
+            <header>
+                <h1>BG2MKJ的起始页 <span id="username-display"></span></h1>
+                <button id="logout-btn" class="logout-btn">退出</button>
+            </header>
 
-    <!-- 日程 -->
-    <div>
-        <h2>
+            <!-- 搜索 -->
+            <section class="search-section">
+                <form action="https://www.baidu.com/s" method="get">
+                    <div class="search-container">
+                        <input type="text" name="wd" placeholder="搜索一下" autofocus>
+                        <button type="submit">搜索</button>
+                    </div>
+                </form>
+            </section>
 
-            BG2MKJ的日程
-        </h2>
-        <table border="10" id="coursetable">
-            <thead>
-                <tr>
-                    <th>时间/星期</th>
-                    <th>星期一</th>
-                    <th>星期二</th>
-                    <th>星期三</th>
-                    <th>星期四</th>
-                    <th>星期五</th>
-                    <th>星期六</th>
-                    <th>星期日</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="time">上午</td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                </tr>
-                <tr>
-                    <td class="time">下午</td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                </tr>
-                <tr>
-                    <td class="time">晚上</td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                    <td class="data"></td>
-                </tr>
-            </tbody>
+            <!-- 时间和倒计时进度条 -->
+            <section class="time-section">
+                
+                <!-- 倒计时进度条移到这里 -->
+                <div id="countdown-bar">
+                    <div id="countdown-progress"></div>
+                    <div id="countdown-text"></div>
+                </div>
+                <!-- 倒计时控制部分保持原位（在原位置） -->
+            </section>
 
-        </table>
-        <div style="display: inline;">
-            <input hidden type="text" id="passwordtext" placeholder="Id code">
-        </div>
-        <div style="display: inline;">
-            <button id="commitbutton">提交</button>
-        </div>
-        <div style="display: inline;">
-            <button id="cancelbutton">取消</button>
-        </div>
-        <div style="display: inline;">
-            <button id="editbutton">修改</button>
+            <!-- 自定义链接 -->
+            <section class="links-section">
+                <h2>我的链接</h2>
+                <div class="link-sync-status">
+                    <span>同步状态:</span>
+                    <div class="sync-light" id="link-sync-light"></div>
+                </div>
+                <div class="custom-link">
+                    <input type="text" id="link-name-input" placeholder="链接名称">
+                    <input type="text" id="link-url-input" placeholder="链接地址">
+                    <button id="add-link-btn">添加</button>
+                </div>
+                <div class="links-grid" id="links-grid"></div>
+            </section>
+
+            <!-- 待办事项 -->
+            <section class="todo-section">
+                <h2>待办事项</h2>
+                <div class="todo-sync-status">
+                    <span>同步状态:</span>
+                    <div class="sync-light" id="todo-sync-light"></div>
+                </div>
+                <div class="todo-input">
+                    <input type="text" id="todo-input" placeholder="添加新任务...">
+                    <button id="add-todo-btn">添加</button>
+                </div>
+                <div id="todo-list" class="todo-list"></div>
+            </section>
+
+            <!-- 时间和倒计时进度条 -->
+            <section class="time-section">
+                <div id="realtime" class="realtime"></div>
+                
+                <!-- 倒计时控制部分保持原位（在原位置） -->
+            </section>
+
+            <!-- 倒计时控制部分仍保留在原来的位置附近 -->
+            <div class="countdown-controls">
+                <button id="modify-countdown">修改倒计时</button>
+                <input type="date" id="countdown-date">
+            </div>
+
+            <!-- 网络状态 -->
+            <section class="network-status">
+                <div id="network-status">
+                    <span class="status-icon">↻</span>
+                    <span id="status-text">检测网络状态...</span>
+                </div>
+            </section>
+
+            <!-- 日程表 -->
+            <section class="schedule-section">
+                <h2>我的日程</h2>
+                <table id="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>时间/星期</th>
+                            <th>星期一</th>
+                            <th>星期二</th>
+                            <th>星期三</th>
+                            <th>星期四</th>
+                            <th>星期五</th>
+                            <th>星期六</th>
+                            <th>星期日</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-cell">上午</td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">下午</td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                        </tr>
+                        <tr>
+                            <td class="time-cell">晚上</td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                            <td class="data-cell" contenteditable="false"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="schedule-controls">
+                    <button id="edit-schedule-btn">编辑日程</button>
+                    <button id="save-schedule-btn" class="hidden">保存</button>
+                    <button id="cancel-edit-btn" class="hidden">取消</button>
+                </div>
+            </section>
+
+            <footer>
+                <div id="version-info"></div>
+            </footer>
         </div>
     </div>
-    <hr>
-    <h6 id="v"></h6>
+
     <script src="BG2MKJ-homepage.js"></script>
-    
 </body>
-
 </html>
+    

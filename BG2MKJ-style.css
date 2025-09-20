@@ -1,221 +1,690 @@
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --border-color: #dee2e6;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+    /* 增加基础字体大小 */
+    --base-font-size: 18px;
+}
 
-
-/* 然后替换所有#4a90e2为var(--primary-color) */
-body {
+* {
     margin: 0;
-    min-height: 100vh;
-    background: 
-        linear-gradient(to bottom, #ababab, #ffffff 10%) /* 顶部 10% 渐变 */
-        no-repeat,
-        #ffffff; /* 剩余 90% 纯白色背景 */
-}
-table{
-    width: 100%;
-    border: 1px solid #ddd;
-    border-collapse: collapse;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-
-}
-h1,h2,h6{
-    text-align: center;
-    
-}
-th{
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: center;
-
-}
-
-.searchtext{
-    text-align: center;
-    width: 100%;
-}
-#realtime{
-    text-align: center;
-    font-family: Arial, sans-serif;
-    font-size: 24px;
-    /* color: #333; */
-    /* background-color: #f0f0f0; */
-    margin: 10px 0px;
-    border-radius: 8px;
-    /* display: inline-block; */
-    /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); */
-}
-.searchtext input[type="text"] {
-    width: 50%;
-    height: 46px;
-    padding: 0 10px;
-    font-size: 18px;
-    font-family: "FangSong","仿宋",sans-serif;
-    border: 2px solid #a4abb3;
-    outline: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  .searchtext input[type="text"]:focus {
-    border-color: #1b1f23; /* 深蓝色聚焦效果 */
-    box-shadow: 0 0 8px rgba(33, 45, 58, 0.6); /* 聚焦时阴影增强 */
-}
-  .searchbut input[type="submit"] {
-    width: 100px;
-    height: 35px;
-    font-size: 16px;
-    font-family: "FangSong","仿宋",sans-serif;
-    background-color: #c4c4c4;
-    border-radius: 2px;
-    border-color: #a3a3a9;
-  }
-.searchbut{
-    text-align: center;
-    font-family: "FangSong","仿宋",sans-serif;
-}
-div{
-    text-align: center;
-    width: 100%;
-}
-.data{
-    text-align: center;
-    padding: 8px;
-    position: relative;
-    height: 40px;
-    height: 80px;
-    font-family: "FangSong","仿宋",sans-serif;
-}
-
-.time{
-    text-align: center;
-    padding: 8px;
-}
-
-.editable-cell
-{
-    
-    
-    width: 100%;
-    height: 100%;
-    padding: 8px;
+    padding: 0;
     box-sizing: border-box;
-    border: solid #ccc;
-    margin: 0;
+    /* 应用基础字体大小 */
+    font-size: var(--base-font-size);
 }
 
-
-#passwordtext{
-    width: 20%;
-    height: 40px;
+body {
+    font-family: 'FangSong', '仿宋', sans-serif;
+    background: linear-gradient(to bottom, #ababab, #ffffff 10%) no-repeat, #ffffff;
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
 }
 
-button {
-    width: 17%;          /* 保持 15% 宽度 */
-    height: 40px;        /* 固定高度 */
-    padding: 2px;        /* 内边距 */
-    box-sizing: border-box;  /* 防止 padding 影响宽度计算 */
-    white-space: nowrap; /* 防止文字换行 */
-    overflow: visible;    /* 隐藏溢出内容 */
-    text-overflow: ellipsis; /* 超出部分显示省略号 */
-    font-size: clamp(12px, 2vw, 16px); /* 字体大小自适应 */
-    font-family: "FangSong","仿宋",sans-serif;
-   background-color: #c4c4c4;
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 认证样式 */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.auth-form {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    font-size: 28px;
+}
+
+#auth-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 20px;
+}
+
+.tab-btn.active {
+    border-bottom: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.auth-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-form-content input {
+    padding: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+.auth-form-content button {
+    padding: 14px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: var(--transition);
+}
+
+.auth-form-content button:hover {
+    background-color: #357abd;
+}
+
+.message {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.message.error {
+    background-color: #ffebee;
+    color: var(--danger-color);
+}
+
+.message.success {
+    background-color: #e8f5e9;
+    color: var(--success-color);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 主内容样式 */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: var(--primary-color);
+    font-size: 32px;
+}
+
+.logout-btn {
+    padding: 10px 20px;
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 26px;
+}
+
+/* 搜索样式 */
+.search-container {
+    display: flex;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-container input {
+    flex: 1;
+    padding: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px 0 0 5px;
+    font-size: 20px;
+}
+
+.search-container button {
+    padding: 14px 24px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 18px;
+}
+/* 同步状态指示灯样式 */
+.sync-light {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-left: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.sync-light.success {
+    background-color: var(--success-color);
+}
+
+.sync-light.error {
+    background-color: var(--danger-color);
+}
+
+.sync-light.warning {
+    background-color: var(--warning-color);
+}
+
+/* 同步状态容器样式 */
+.link-sync-status, .todo-sync-status {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: var(--secondary-color);
+}
+/* 链接样式 - 重点优化 */
+/* 链接样式 - 修改后 */
+/* 链接部分样式 - 重新设计 */
+.links-section {
+    margin-bottom: 30px;
+    padding: 25px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.link-sync-status {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: var(--secondary-color);
+    display: flex;
+    align-items: center;
+}
+
+.custom-link {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    flex-wrap: wrap; /* 响应式处理 */
+}
+
+#link-name-input, #link-url-input {
+    flex: 1;
+    min-width: 200px; /* 确保小屏幕上有合适宽度 */
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 18px;
+    transition: border-color 0.3s ease;
+}
+
+#link-name-input:focus, #link-url-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+#add-link-btn {
+    padding: 12px 24px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    white-space: nowrap; /* 防止按钮文字换行 */
+}
+
+#add-link-btn:hover {
+    background-color: #357abd;
+    transform: translateY(-2px);
+}
+
+#add-link-btn:active {
+    transform: translateY(0);
+}
+
+.links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.link-item {
+    position: relative;
+}
+
+.quick-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 12px;
+    background-color: #f0f7ff;
+    color: var(--primary-color);
+    text-align: center;
+    text-decoration: none;
     border-radius: 8px;
+    font-size: 18px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    min-height: 80px; /* 确保链接块有足够高度 */
+    word-break: break-word; /* 处理长名称 */
 }
 
-/* 移动端适配 */
+.quick-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+    border-color: #357abd;
+}
+
+.quick-link:active {
+    transform: translateY(-1px);
+}
+
+.link-delete {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.link-item:hover .link-delete {
+    opacity: 1;
+}
+
+.link-item .link-delete:hover {
+    background-color: #c82333;
+    transform: scale(1.1);
+}
+
+.no-links {
+    grid-column: 1 / -1; /* 跨所有列 */
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--secondary-color);
+    background-color: var(--light-color);
+    border-radius: 8px;
+    font-size: 18px;
+}
+/* 基础超链接样式 - 确保覆盖默认样式 */
+a {
+    /* 取消下划线 */
+    text-decoration: none !important;
+    /* 字体大小 */
+    font-size: 22px !important;
+    /* 字体颜色 */
+    color: #2c6ecb !important;
+    /* 背景色 */
+    background-color: #f0f7ff !important;
+    /* 确保样式应用 */
+    display: inline-block !important;
+    padding: 15px 20px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+}
+
+/* 链接悬停效果 */
+a:hover {
+    color: white !important;
+    background-color: var(--primary-color) !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3) !important;
+}
+
+/* 针对链接项的额外调整 */
+.link-item a {
+    width: 100% !important;
+    height: 100% !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    border: 2px solid transparent !important;
+}
+
+.link-item a:hover {
+    border-color: #357abd !important;
+}
+
+/* 响应式调整 */
 @media (max-width: 768px) {
-    button {
-        width: 15%;      /* 在小屏幕上适当增加宽度 */
-        font-size: 14px; /* 调整字体大小 */
-        font-family: "FangSong","仿宋",sans-serif;
+    .custom-link {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    #link-name-input, #link-url-input, #add-link-btn {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .links-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+/* 待办事项样式 */
+.todo-input {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.todo-input input {
+    flex: 1;
+    padding: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.todo-input button {
+    padding: 14px 24px;
+    background-color: var(--success-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.todo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    padding: 14px;
+    background-color: var(--light-color);
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.todo-item.completed {
+    opacity: 0.7;
+    text-decoration: line-through;
+}
+
+.todo-item input[type="checkbox"] {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+}
+
+.todo-text {
+    flex: 1;
+}
+
+.todo-delete {
+    color: var(--danger-color);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+}
+
+/* 时间样式 */
+.realtime {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.countdown-container {
+    margin-bottom: 20px;
+}
+
+#countdown-bar {
+    height: 40px;
+    background-color: var(--light-color);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+#countdown-progress {
+    height: 100%;
+    background: linear-gradient(to right, #7be4e4, #00ff99);
+    border-radius: 20px;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+#countdown-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--dark-color);
+    font-weight: bold;
+    font-size: 18px;
+    white-space: nowrap;
+}
+
+.countdown-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.countdown-controls button {
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.countdown-controls input {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+/* 网络状态样式 */
+.network-status {
+    text-align: center;
+}
+
+#network-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background-color: var(--light-color);
+    border-radius: 20px;
+    font-size: 18px;
+}
+
+.status-icon {
+    font-size: 22px;
+}
+
+.online .status-icon {
+    color: var(--success-color);
+}
+
+.offline .status-icon {
+    color: var(--danger-color);
+}
+
+/* 日程表样式 */
+#schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+#schedule-table th,
+#schedule-table td {
+    border: 1px solid var(--border-color);
+    padding: 14px;
+    text-align: center;
+    font-size: 18px;
+}
+
+#schedule-table th {
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 18px;
+}
+
+.time-cell {
+    background-color: var(--light-color);
+    font-weight: bold;
+}
+
+.data-cell:focus {
+    outline: 2px solid var(--primary-color);
+}
+
+.schedule-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.schedule-controls button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+#edit-schedule-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#save-schedule-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+
+#cancel-edit-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+/* 页脚样式 */
+footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    color: var(--secondary-color);
+    font-size: 18px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .links-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    
+    #schedule-table {
+        font-size: 16px;
+    }
+    
+    #schedule-table th,
+    #schedule-table td {
+        padding: 10px;
+        font-size: 16px;
+    }
+    
+    .realtime {
+        font-size: 24px;
     }
 }
 
 @media (max-width: 480px) {
-    button {
-        width: 15%;      /* 在超小屏幕上进一步调整 */
-        font-size: 10px; /* 更小的字体 */
-        font-family: "FangSong","仿宋",sans-serif;
+    .auth-form {
+        padding: 20px;
     }
-}
-.quick_link{
-    font-size:medium;
-    font-weight: bold;
-    background-color: #c4c4c4;
-    color: rgb(17, 9, 9);
-    border: none;
-    border-radius: 8px;
-    padding: 1px 2px;
-    cursor: pointer;
-    transition: all 0.3 ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     
-}
-.quick_link:hover {
-    background-color: #8c8c8c; /* 悬停时深蓝色 */
-    transform: translateY(-2px); /* 轻微上浮效果 */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-#custom_link
-{
-    height: 40px;
-    width: 40%;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    border-radius: 8px;
-    border: 2px solid #444450;
-}
-#count_down_back{
-    background-color:#ccc;
-    position: relative;
-    overflow: hidden;
-    height: 5%;
-}
-#count_down_front{
+    .todo-input {
+        flex-direction: column;
+    }
     
-    width: 50%;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    height: 100%;
-    background: linear-gradient(to right, #7be4e4, #00ff99);
-}
-#count_down_text {
-    position: absolute; /* 关键：文字绝对定位 */
-    left: 50%; /* 水平居中 */
-    top: 50%; /* 垂直居中 */
-    transform: translate(-50%, -50%); /* 精确居中 */
-    color: black; /* 文字颜色 */
-    font-weight: bold;
-    white-space: nowrap; /* 防止换行 */
-    z-index: 1; /* 确保文字在进度条上方 */
-}
-#modify_count_down {
+    .countdown-controls {
+        flex-direction: column;
+    }
     
-    align-items: center;     /* 垂直居中 */
-    justify-content: center; /* 水平居中 */
-    height: 30px;           /* 必须指定高度 */
-    padding: 0 10px;        /* 可选：调整内边距 */
-}
-#date_selector{
-    align-items: center;     /* 垂直居中 */
-    justify-content: center; /* 水平居中 */
-    height: 30px;           /* 必须指定高度 */
-    padding: 0 10px;        /* 可选：调整内边距 */
-    font-family: "FangSong","仿宋",sans-serif;
-}
-#count_modi {
-  display: flex;
-  justify-content: center; /* 水平居中 */
-  align-items: center;    /* 垂直居中 */
-  gap: 10px;             /* 可选：设置按钮和输入框之间的间距 */
-}
-
-.status-icon {
-    font-size: 20px;
-    color: #4a90e2;
-    animation: spin 2s linear infinite; /* 旋转动画 */
-}
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    .quick-link {
+        font-size: 18px;
+        padding: 14px 10px;
+    }
 }
