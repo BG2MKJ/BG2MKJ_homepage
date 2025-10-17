@@ -59,6 +59,20 @@
                 </div>
                 <!-- 倒计时控制部分保持原位（在原位置） -->
             </section>
+            
+            <!-- 待办事项 -->
+            <section class="todo-section">
+                <h2>待办事项</h2>
+                <div class="todo-sync-status">
+                    <span>同步状态:</span>
+                    <div class="sync-light" id="todo-sync-light"></div>
+                </div>
+                <div class="todo-input">
+                    <input type="text" id="todo-input" placeholder="添加新任务...">
+                    <button id="add-todo-btn">添加</button>
+                </div>
+                <div id="todo-list" class="todo-list"></div>
+            </section>
 
             <!-- 自定义链接 -->
             <section class="links-section">
@@ -75,19 +89,7 @@
                 <div class="links-grid" id="links-grid"></div>
             </section>
 
-            <!-- 待办事项 -->
-            <section class="todo-section">
-                <h2>待办事项</h2>
-                <div class="todo-sync-status">
-                    <span>同步状态:</span>
-                    <div class="sync-light" id="todo-sync-light"></div>
-                </div>
-                <div class="todo-input">
-                    <input type="text" id="todo-input" placeholder="添加新任务...">
-                    <button id="add-todo-btn">添加</button>
-                </div>
-                <div id="todo-list" class="todo-list"></div>
-            </section>
+            
 
             <!-- 时间和倒计时进度条 -->
             <section class="time-section">
@@ -171,7 +173,12 @@
             </footer>
         </div>
     </div>
-
+    <!-- 在<body>末尾添加 -->
+<div id="error-log-panel" class="hidden" style="position: fixed; bottom: 20px; right: 20px; max-width: 300px; background: #fff; padding: 10px; border: 1px solid #f00; border-radius: 5px; max-height: 300px; overflow-y: auto;">
+    <h3 style="margin: 0 0 10px; font-size: 16px; color: #dc3545;">错误日志</h3>
+    <pre id="error-log-content" style="font-size: 14px; margin: 0;"></pre>
+    <button onclick="document.getElementById('error-log-panel').classList.add('hidden')" style="margin-top: 10px; font-size: 14px;">关闭</button>
+</div>
     <script src="BG2MKJ-homepage.js"></script>
 </body>
 </html>

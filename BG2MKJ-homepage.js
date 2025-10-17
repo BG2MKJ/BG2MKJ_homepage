@@ -34,6 +34,15 @@ function checkAuthStatus() {
     }
 }
 
+// 记录错误到日志面板
+function logError(message) {
+    const logPanel = document.getElementById('error-log-panel');
+    const logContent = document.getElementById('error-log-content');
+    const time = new Date().toLocaleTimeString();
+    logContent.innerHTML += `[${time}] ${message}\n`;
+    logPanel.classList.remove('hidden'); // 显示错误面板
+}
+
 // 显示认证表单
 function showAuthForm() {
     document.getElementById('auth-container').classList.remove('hidden');
@@ -116,66 +125,163 @@ function makeRequest(url, data) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest' // 添加此头部以识别为AJAX请求
         },
         body: new URLSearchParams(data),
-        mode: 'cors'
+        credentials: 'same-origin' // 使用同域凭证，而不是cors模式
     })
     .then(response => {
+        // 捕获HTTP错误状态（4xx/5xx）
         if (!response.ok) {
-            throw new Error(`网络请求失败: ${response.status}`);
+            return response.text().then(text => {
+                throw new Error(`请求失败 [${response.status}]: ${text.substring(0, 200)}`);
+            });
         }
-        return response.json();
+        // 先获取文本再解析JSON，避免解析失败时丢失响应内容
+        return response.text().then(text => {
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                // 记录无效JSON的原始内容（关键排查信息）
+                console.error(`解析JSON失败 (${url}):`, text);
+                throw new Error(`服务器返回格式错误: ${e.message}`);
+            }
+        });
     })
     .catch(error => {
-        console.error('请求错误:', error);
-        return { success: false, message: '网络错误，请检查连接' };
+        // 详细记录错误信息到日志面板
+        const errorDetails = `请求URL: ${url}\n错误信息: ${error.message}\n错误类型: ${error.name}`;
+        logError(errorDetails);
+        
+        // 详细分类错误类型，提供针对性的错误提示
+        let errorMsg = '';
+        
+        // 1. 按错误名称分类
+        switch(error.name) {
+            case 'SyntaxError':
+                errorMsg = '语法错误：服务器返回的数据格式错误，请检查PHP文件输出是否为有效的JSON格式';
+                break;
+            case 'TypeError':
+                errorMsg = '类型错误：请求处理过程中发生类型错误，请检查数据类型是否正确';
+                break;
+            case 'RangeError':
+                errorMsg = '范围错误：请求参数超出有效范围，请检查输入数据是否合法';
+                break;
+            case 'AbortError':
+                errorMsg = '请求被中止：可能是网络不稳定或用户操作中断了请求';
+                break;
+            case 'DOMException':
+                errorMsg = 'DOM错误：浏览器DOM操作失败，可能是浏览器兼容性问题';
+                break;
+            default:
+                // 继续检查其他错误类型
+                if (error.message) {
+                    // 2. 按错误消息内容分类
+                    if (error.message.includes('JSON')) {
+                        errorMsg = '数据格式错误：服务器返回了无效的JSON格式数据，请检查PHP文件是否正常工作';
+                    } else if (error.message.includes('404')) {
+                        errorMsg = '文件不存在错误：请求的PHP文件未找到，请确认文件已正确上传到虚拟主机';
+                    } else if (error.message.includes('403')) {
+                        errorMsg = '权限错误：服务器拒绝访问请求，请检查用户权限设置';
+                    } else if (error.message.includes('500')) {
+                        errorMsg = '服务器错误：PHP代码执行出错，请联系管理员检查服务器日志';
+                    } else if (error.message.includes('502')) {
+                        errorMsg = '网关错误：服务器作为网关收到了无效响应，请稍后再试';
+                    } else if (error.message.includes('503')) {
+                        errorMsg = '服务不可用：服务器暂时无法处理请求，可能是服务器负载过高';
+                    } else if (error.message.includes('Failed to fetch')) {
+                        errorMsg = '连接错误：无法连接到服务器，请检查虚拟主机是否正常运行或网络连接是否稳定';
+                    } else if (error.message.includes('timeout')) {
+                        errorMsg = '请求超时：服务器响应时间过长，请稍后再试或检查服务器负载';
+                    } else if (error.message.includes('NetworkError')) {
+                        errorMsg = '网络错误：浏览器无法建立网络连接，请检查您的网络连接或防火墙设置';
+                    } else if (error.message.includes('Connection refused')) {
+                        errorMsg = '连接被拒绝：服务器拒绝了连接请求，请确认虚拟主机服务正常运行';
+                    } else if (error.message.includes('Access-Control')) {
+                        errorMsg = '跨域错误：浏览器的跨域安全策略阻止了请求，请检查服务器的CORS设置';
+                    }
+                }
+                
+                // 3. 如果没有匹配到具体错误类型，提供通用错误信息
+                if (!errorMsg) {
+                    errorMsg = '请求处理异常：发生未知错误，错误类型: ' + (error.name || '未知');
+                    if (error.code) {
+                        errorMsg += ', 错误代码: ' + error.code;
+                    }
+                }
+        }
+        
+        // 打印详细错误到控制台以便调试
+        console.error('请求错误详情:', {
+            url: url,
+            error: error,
+            data: data,
+            stack: error.stack
+        });
+        
+        return { 
+            success: false, 
+            message: errorMsg, 
+            originalError: error.message,
+            errorType: error.name,
+            requestUrl: url
+        };
     });
 }
 
 // 用户登录
 function loginUser(username, password) {
+    // 前端预校验
+    if (!username.trim() || !password.trim()) {
+        showMessage('用户名和密码不能为空', 'error');
+        return;
+    }
     makeRequest('auth.php', {
         action: 'login',
         username: username,
         password: password
     }).then(data => {
         if (data.success) {
-            localStorage.setItem('authToken', 'token_' + Date.now()); // 简单的token模拟
+            // 校验返回数据完整性
+            if (!data.userId || !data.username || !data.token) {
+                showMessage('登录信息不完整', 'error');
+                console.error('登录响应缺少必要字段:', data);
+                return;
+            }
+            localStorage.setItem('authToken', data.token); // 修复之前的模拟token问题
             localStorage.setItem('userId', data.userId);
             localStorage.setItem('username', data.username);
             currentUser = { id: data.userId, username: data.username };
             showMainContent();
             loadUserData();
         } else {
-            showMessage(data.message, 'error');
+            showMessage(data.message || '登录失败', 'error');
         }
     });
 }
-
 // 用户注册
 function registerUser(username, password, email) {
-    const formData = new FormData();
-    formData.append('action', 'register');
-    formData.append('username', username);
-    formData.append('password', password);
-    formData.append('email', email || '');
-    
-    fetch('auth.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
+    // 前端预校验
+    if (username.length < 3 || username.length > 50) {
+        showMessage('用户名长度必须在3-50个字符之间', 'error');
+        return;
+    }
+    if (password.length < 6) {
+        showMessage('密码长度至少6个字符', 'error');
+        return;
+    }
+    makeRequest('auth.php', {
+        action: 'register',
+        username: username,
+        password: password,
+        email: email || ''
+    }).then(data => {
         if (data.success) {
             showMessage('注册成功，请登录', 'success');
             document.querySelector('.tab-btn[data-tab="login"]').click();
         } else {
-            showMessage(data.message, 'error');
+            showMessage(data.message || '注册失败', 'error');
         }
-    })
-    .catch(error => {
-        showMessage('注册失败，请重试', 'error');
-        console.error('Registration error:', error);
     });
 }
 
