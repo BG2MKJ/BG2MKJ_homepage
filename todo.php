@@ -28,7 +28,22 @@ if (!empty($token)) {
 }
 
 if (!$userId) {
-    echo json_encode(['success' => false, 'message' => '未登录或会话已过期']);
+    // 区分未登录和会话过期
+    $errorType = 'not_logged_in';
+    $errorMessage = '未登录';
+    
+    // 如果有token但验证失败，说明会话过期
+    if (!empty($token)) {
+        $errorType = 'session_expired';
+        $errorMessage = '会话已过期';
+    }
+    
+    echo json_encode([
+        'success' => false, 
+        'message' => $errorMessage,
+        'error_type' => $errorType,
+        'requires_login' => true
+    ]);
     exit;
 }
 

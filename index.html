@@ -112,60 +112,15 @@
                 </div>
             </section>
 
-            <!-- 日程表 -->
-            <section class="schedule-section">
-                <h2>我的日程</h2>
-                <table id="schedule-table">
-                    <thead>
-                        <tr>
-                            <th>时间/星期</th>
-                            <th>星期一</th>
-                            <th>星期二</th>
-                            <th>星期三</th>
-                            <th>星期四</th>
-                            <th>星期五</th>
-                            <th>星期六</th>
-                            <th>星期日</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="time-cell">上午</td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                        </tr>
-                        <tr>
-                            <td class="time-cell">下午</td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                        </tr>
-                        <tr>
-                            <td class="time-cell">晚上</td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                            <td class="data-cell" contenteditable="false"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="schedule-controls">
-                    <button id="edit-schedule-btn">编辑日程</button>
-                    <button id="save-schedule-btn" class="hidden">保存</button>
-                    <button id="cancel-edit-btn" class="hidden">取消</button>
+            <!-- 英文单词查询器 -->
+            <section class="dictionary-section">
+                <h2>英文单词查询</h2>
+                <div class="dictionary-input-container">
+                    <input type="text" id="word-input" placeholder="输入英文单词...">
+                    <button id="query-word-btn">查询</button>
+                    <button id="clear-word-btn">清空</button>
                 </div>
+                <div id="word-result-display" class="word-result-display"></div>
             </section>
 
             <footer>

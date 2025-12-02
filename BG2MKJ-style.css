@@ -424,6 +424,25 @@ a:hover {
     }
 }
 
+@media (max-width: 480px) {
+    .auth-form {
+        padding: 20px;
+    }
+    
+    .todo-input {
+        flex-direction: column;
+    }
+    
+    .countdown-controls {
+        flex-direction: column;
+    }
+    
+    .quick-link {
+        font-size: 18px;
+        padding: 14px 10px;
+    }
+}
+
 /* 待办事项样式 */
 .todo-input {
     display: flex;
@@ -573,67 +592,60 @@ a:hover {
 }
 
 .offline .status-icon {
+    animation: none;
     color: var(--danger-color);
 }
 
-/* 日程表样式 */
-#schedule-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    box-shadow: var(--shadow);
+/* 单词查询器样式 */
+.dictionary-section {
+    padding: 25px;
 }
 
-#schedule-table th,
-#schedule-table td {
-    border: 1px solid var(--border-color);
-    padding: 14px;
-    text-align: center;
-    font-size: 18px;
-}
-
-#schedule-table th {
-    background-color: var(--primary-color);
-    color: white;
-    font-size: 18px;
-}
-
-.time-cell {
-    background-color: var(--light-color);
-    font-weight: bold;
-}
-
-.data-cell:focus {
-    outline: 2px solid var(--primary-color);
-}
-
-.schedule-controls {
+.dictionary-input-container {
     display: flex;
-    justify-content: center;
-    gap: 12px;
+    gap: 10px;
+    margin-bottom: 20px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.schedule-controls button {
-    padding: 12px 24px;
+#word-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 18px;
+}
+
+#query-word-btn, #clear-word-btn {
+    padding: 12px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 18px;
+    transition: var(--transition);
 }
 
-#edit-schedule-btn {
+#query-word-btn {
     background-color: var(--primary-color);
     color: white;
 }
 
-#save-schedule-btn {
-    background-color: var(--success-color);
+#clear-word-btn {
+    background-color: var(--secondary-color);
     color: white;
 }
 
-#cancel-edit-btn {
-    background-color: var(--danger-color);
-    color: white;
+.word-result-display {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: var(--light-color);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    min-height: 100px;
+    white-space: pre-wrap;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 /* 页脚样式 */

@@ -95,6 +95,15 @@ function validateToken($pdo, $token) {
             $updateStmt = $pdo->prepare("UPDATE user_sessions SET last_activity = NOW() WHERE id = ?");
             $updateStmt->execute([$session['id']]);
             
+            // 会话续期机制：如果会话将在7天内过期，自动续期30天
+            $expiresIn = strtotime($session['expires_at']) - time();
+            if ($expiresIn < 7 * 24 * 60 * 60) { // 7天内过期
+                $newExpiresAt = date('Y-m-d H:i:s', strtotime('+30 days'));
+                $renewStmt = $pdo->prepare("UPDATE user_sessions SET expires_at = ? WHERE id = ?");
+                $renewStmt->execute([$newExpiresAt, $session['id']]);
+                error_log("会话续期: 用户 {$session['username']} 的会话已续期至 {$newExpiresAt}");
+            }
+            
             return $session;
         }
         return false;
@@ -157,8 +166,8 @@ function cleanupExpiredSessions($pdo) {
     }
 }
 
-// 定期清理过期会话（每次有10%的概率执行）
-if (rand(1, 10) === 1) {
+// 定期清理过期会话（每次有1%的概率执行，减少清理频率）
+if (rand(1, 100) === 1) {
     cleanupExpiredSessions($pdo);
 }
 ?>

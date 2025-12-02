@@ -1,5 +1,5 @@
-const VERSION = "2.0.0";
-const MODIFY = 20250920;
+const VERSION = "2.1.0";
+const MODIFY = 20251202;
 
 // 全局变量
 let currentUser = null;
@@ -26,12 +26,41 @@ function checkAuthStatus() {
     const username = localStorage.getItem('username');
     
     if (token && userId && username) {
-        currentUser = { id: userId, username: username };
-        showMainContent();
-        loadUserData();
+        // 验证token是否有效
+        validateToken(token).then(isValid => {
+            if (isValid) {
+                currentUser = { id: userId, username: username };
+                showMainContent();
+                loadUserData();
+            } else {
+                // Token无效，清除本地存储并显示登录表单
+                console.log('Token验证失败，不清除本地存储');
+                // localStorage.removeItem('authToken');
+                // localStorage.removeItem('userId');
+                // localStorage.removeItem('username');
+                // showAuthForm();
+                alert("Token无效: "+token);
+            }
+        }).catch(error => {
+            console.error('Token验证错误:', error);
+            // 网络错误时，尝试使用本地存储的数据
+            currentUser = { id: userId, username: username };
+            showMainContent();
+            loadUserData();
+        });
     } else {
         showAuthForm();
     }
+}
+
+// 验证token有效性
+function validateToken(token) {
+    return makeRequest('auth.php', {
+        action: 'validate_token',
+        token: token
+    }).then(response => {
+        return response.success;
+    });
 }
 
 // 记录错误到日志面板
@@ -99,14 +128,14 @@ function setupEventListeners() {
         if (e.key === 'Enter') addTodo();
     });
     
-    // 日程表编辑
-    document.getElementById('edit-schedule-btn').addEventListener('click', enableScheduleEditing);
-    document.getElementById('save-schedule-btn').addEventListener('click', saveSchedule);
-    document.getElementById('cancel-edit-btn').addEventListener('click', cancelScheduleEditing);
-    
     // 倒计时
     document.getElementById('modify-countdown').addEventListener('click', showDateSelector);
     document.getElementById('countdown-date').addEventListener('change', updateCountdown);
+
+    // 单词查询
+    document.getElementById('word-input').addEventListener('input', queryWord);
+    document.getElementById('query-word-btn').addEventListener('click', queryWord);
+    document.getElementById('clear-word-btn').addEventListener('click', clearWordFinder);
 }
 
 // 初始化功能
@@ -117,10 +146,15 @@ function initializeFeatures() {
     updateNetworkStatus();
     setInterval(updateNetworkStatus, 5000);
     initializeCountdown();
-    loadSchedule();
 }
 
 function makeRequest(url, data) {
+    // 自动添加token到请求数据中
+    const token = localStorage.getItem('authToken');
+    if (token) {
+        data.token = token;
+    }
+    
     return fetch(url, {
         method: 'POST',
         headers: {
@@ -285,6 +319,23 @@ function registerUser(username, password, email) {
     });
 }
 
+// 处理会话过期
+function handleSessionExpired() {
+    console.log('检测到会话过期，清除本地存储并显示登录表单');
+    
+    // 清除本地存储
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
+    currentUser = null;
+    
+    // 显示登录表单
+    showAuthForm();
+    
+    // 显示提示信息
+    showMessage('会话已过期，请重新登录', 'warning');
+}
+
 // 退出登录
 function logoutUser() {
     localStorage.removeItem('authToken');
@@ -326,10 +377,24 @@ function loadLinks() {
             renderLinks();
             setSyncStatus('link', 'success');
         } else {
-            console.error('Load links error:', data.message);
+            // 改进错误日志，区分未登录和会话过期
+            if (data.error_type === 'session_expired') {
+                console.warn('会话已过期，需要重新登录');
+                logError(`链接加载失败: 会话已过期 (token: ${localStorage.getItem('authToken')?.substring(0, 10)}...)`);
+                // 自动清除过期token并重新登录
+                handleSessionExpired();
+            } else if (data.error_type === 'not_logged_in') {
+                console.warn('用户未登录');
+                logError('链接加载失败: 用户未登录');
+            } else {
+                console.error('Load links error:', data.message);
+                logError(`链接加载失败: ${data.message}`);
+            }
             setSyncStatus('link', 'error');
         }
-    }).catch(() => {
+    }).catch((error) => {
+        console.error('链接加载网络错误:', error);
+        logError(`链接加载网络错误: ${error.message}`);
         setSyncStatus('link', 'error');
     });
 }
@@ -461,10 +526,24 @@ function loadTodos() {
             renderTodos();
             setSyncStatus('todo', 'success');
         } else {
-            console.error('Load todos error:', data.message);
+            // 改进错误日志，区分未登录和会话过期
+            if (data.error_type === 'session_expired') {
+                console.warn('会话已过期，需要重新登录');
+                logError(`待办加载失败: 会话已过期 (token: ${localStorage.getItem('authToken')?.substring(0, 10)}...)`);
+                // 自动清除过期token并重新登录
+                handleSessionExpired();
+            } else if (data.error_type === 'not_logged_in') {
+                console.warn('用户未登录');
+                logError('待办加载失败: 用户未登录');
+            } else {
+                console.error('Load todos error:', data.message);
+                logError(`待办加载失败: ${data.message}`);
+            }
             setSyncStatus('todo', 'error');
         }
-    }).catch(() => {
+    }).catch((error) => {
+        console.error('待办加载网络错误:', error);
+        logError(`待办加载网络错误: ${error.message}`);
         setSyncStatus('todo', 'error');
     });
 }
@@ -561,96 +640,6 @@ function setSyncStatus(type, status) {
     element.classList.add(status);
 }
 
-// 启用日程表编辑
-function enableScheduleEditing() {
-    const cells = document.querySelectorAll('.data-cell');
-    cells.forEach(cell => {
-        cell.contentEditable = 'true';
-    });
-    
-    isEditingSchedule = true;
-    document.getElementById('edit-schedule-btn').classList.add('hidden');
-    document.getElementById('save-schedule-btn').classList.remove('hidden');
-    document.getElementById('cancel-edit-btn').classList.remove('hidden');
-}
-
-// 保存日程表
-function saveSchedule() {
-    const scheduleData = [];
-    const rows = document.querySelectorAll('#schedule-table tbody tr');
-    
-    rows.forEach(row => {
-        const rowData = [];
-        const cells = row.querySelectorAll('td');
-        cells.forEach(cell => {
-            if (cell.classList.contains('data-cell')) {
-                rowData.push(cell.textContent);
-            }
-        });
-        scheduleData.push(rowData);
-    });
-    
-    localStorage.setItem(`schedule_${currentUser.id}`, JSON.stringify(scheduleData));
-    
-    const cells = document.querySelectorAll('.data-cell');
-    cells.forEach(cell => {
-        cell.contentEditable = 'false';
-    });
-    
-    isEditingSchedule = false;
-    document.getElementById('edit-schedule-btn').classList.remove('hidden');
-    document.getElementById('save-schedule-btn').classList.add('hidden');
-    document.getElementById('cancel-edit-btn').classList.add('hidden');
-    
-    alert('日程已保存');
-}
-
-// 取消日程编辑
-function cancelScheduleEditing() {
-    loadSchedule();
-    
-    const cells = document.querySelectorAll('.data-cell');
-    cells.forEach(cell => {
-        cell.contentEditable = 'false';
-    });
-    
-    isEditingSchedule = false;
-    document.getElementById('edit-schedule-btn').classList.remove('hidden');
-    document.getElementById('save-schedule-btn').classList.add('hidden');
-    document.getElementById('cancel-edit-btn').classList.add('hidden');
-}
-
-// 加载日程表
-function loadSchedule() {
-
-    if (!currentUser || !currentUser.id) {
-        console.warn('用户信息未加载，无法加载日程');
-        return; // 终止执行，避免报错
-    }
-
-
-    const savedData = localStorage.getItem(`schedule_${currentUser.id}`);
-    if (savedData) {
-        try {
-            const scheduleData = JSON.parse(savedData);
-            const rows = document.querySelectorAll('#schedule-table tbody tr');
-            
-            rows.forEach((row, rowIndex) => {
-                const cells = row.querySelectorAll('.data-cell');
-                cells.forEach((cell, cellIndex) => {
-                    if (scheduleData[rowIndex] && scheduleData[rowIndex][cellIndex]) {
-                        cell.textContent = scheduleData[rowIndex][cellIndex];
-                    } else {
-                        cell.textContent = '';
-                    }
-                });
-            });
-        } catch (e) {
-            console.error('Error loading schedule:', e);
-        }
-    }
-}
-
 // 初始化倒计时
 function initializeCountdown() {
     updateDateCount();
@@ -742,6 +731,43 @@ function updateDateCount() {
     }
     
     countdownProgress.style.width = `${percent}%`;
+}
+
+// 查询单词
+function queryWord() {
+    const wordInput = document.getElementById('word-input');
+    const word = wordInput.value.trim();
+
+    if (word === '') {
+        clearWordFinder();
+        return;
+    }
+
+    makeRequest('dictionary.php', {
+        action: 'query',
+        word: word
+    }).then(data => {
+        const resultDisplay = document.getElementById('word-result-display');
+        if (data.success) {
+            const wordData = data.data;
+            resultDisplay.innerHTML = `
+                <h3>${wordData.word}   <strong>英式发音:</strong> ${wordData.en_pronunciation || 'N/A'}    <strong>美式发音:</strong> ${wordData.us_pronunciation || 'N/A'}
+                <p><strong>释义:</strong> ${wordData.desc}</p>
+            `;
+        } else {
+            resultDisplay.textContent = data.message || '查询失败';
+        }
+    }).catch(error => {
+        const resultDisplay = document.getElementById('word-result-display');
+        resultDisplay.textContent = '查询时发生错误。';
+        console.error('Word query error:', error);
+    });
+}
+
+// 清空单词查询器
+function clearWordFinder() {
+    document.getElementById('word-input').value = '';
+    document.getElementById('word-result-display').innerHTML = '';
 }
 
 // 显示版本信息
